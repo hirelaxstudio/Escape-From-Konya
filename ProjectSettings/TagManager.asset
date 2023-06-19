@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectable items
   - Traps
+  - Platforms
   layers:
   - Default
   - TransparentFX
