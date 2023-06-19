@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -29,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
 
         raycastDistance = 0.1f;
         raycastExtentY = bc.bounds.extents.y;
+
+        StartCoroutine(LevelStart());
     }
 
     private void Update()
@@ -90,5 +91,15 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(raycastOrigin, Vector2.down * (raycastExtentY + raycastDistance), hit.collider != null ? Color.green : Color.red);
 
         return hit.collider != null;
+    }
+
+    private IEnumerator LevelStart()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
+        anim.Play("Player_start");
+
+        yield return new WaitForSeconds(0.5f);
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
     }
 }

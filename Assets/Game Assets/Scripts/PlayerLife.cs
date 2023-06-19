@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +6,7 @@ public class PlayerLife : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
-    void Start()
+    private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -21,6 +20,29 @@ public class PlayerLife : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Traps"))
+        {
+            Die();
+        }
+    }
+
+    // 2. Die() metodu
+    //private void Die()
+    //{
+    //    rb.bodyType = RigidbodyType2D.Static;
+    //    anim.SetTrigger("death");
+    //    StartCoroutine(RestartLevelCoroutine());
+    //}
+
+    //private IEnumerator RestartLevelCoroutine()
+    //{
+    //    yield return new WaitForSeconds(0.5f);
+    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //}
+
+    // 1. Die() metodu
     private void Die()
     {
         rb.bodyType = RigidbodyType2D.Static;

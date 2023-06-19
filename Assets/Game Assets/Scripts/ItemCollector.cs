@@ -1,20 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemCollector : MonoBehaviour
 {
-    private int score = 0;
-
     [SerializeField] private Text scoreText;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Collectable items"))
+        if (collision.CompareTag("Collectable items"))
         {
-            Destroy(collision.gameObject);
-            score++;
-            scoreText.text = "Score: " + score;
+            // Cherry_disappear animasyonunu baþlat
+            collision.gameObject.GetComponent<Animator>().Play("Cherry_disappear");
+
+            // Objeyi 0.3 saniye sonra yok et
+            Destroy(collision.gameObject, 0.3f);
+
+            /*
+            Alternatif kod:
+
+            // Cherry objesini referans al
+            GameObject cherryObject = collision.gameObject;
+
+            // Cherry_disappear animasyonunu baþlat
+            Animator cherryAnimator = cherryObject.GetComponent<Animator>();
+            cherryAnimator.Play("Cherry_disappear");
+
+            // Coroutine'i baþlat
+            Destroy(cherryObject, 0.3f);
+            */
+
+            Score.score++;
+            scoreText.text = "Score: " + Score.score;
         }
     }
 }
