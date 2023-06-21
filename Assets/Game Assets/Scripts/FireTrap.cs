@@ -1,17 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-/*
-sD baþlýyo
-sD bitiyo
-fire anim baþlýyo
-fire anim bitiyo
-fire box collider kapanýyo
-repeatDelay baþlýyo
-repeatDelay bitiyo
-fire box collider açýlýyo
-REPEAT
- */
 public class FireTrap : MonoBehaviour
 {
     [SerializeField] private float startDelay = 1f;
@@ -30,19 +19,19 @@ public class FireTrap : MonoBehaviour
 
     private IEnumerator TriggerAnimationWithDelay()
     {
-        yield return new WaitForSeconds(startDelay);
+        yield return new WaitForSeconds(startDelay); // startDelay kadar bekle
 
         while (true)
         {
-            anim.SetTrigger("fire"); // "fire" animasyonunu tetikle
+            anim.SetTrigger("idle"); // "idle" animasyonunu tetikle
 
-            bc.enabled = true; // Box collider'ý aktif et
+            bc.enabled = true; // BoxCollider'ý aktif et
 
             yield return new WaitForSeconds(0.667f); // Animasyonun uzunluðu kadar bekle
 
-            bc.enabled = false; // Box collider'ý pasif et
+            bc.enabled = false; // BoxCollider'ý pasif et
 
-            yield return new WaitForSeconds(repeatDelay);
+            yield return new WaitForSeconds(repeatDelay); // repeatDelay kadar bekle
         }
     }
 }

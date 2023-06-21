@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingObject : MonoBehaviour
 {
     [SerializeField] Transform startPoint; // Baþlangýç noktasý
     [SerializeField] Transform endPoint; // Bitiþ noktasý
@@ -9,10 +9,10 @@ public class MovingPlatform : MonoBehaviour
 
     private void Start()
     {
-        MovePlatform();
+        MoveObject();
     }
 
-    private void MovePlatform()
+    private void MoveObject()
     {
         if (endPoint != null) // endPoint null deðilse hareketi baþlat
         {
