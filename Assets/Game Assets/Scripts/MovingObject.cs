@@ -14,8 +14,10 @@ public class MovingObject : MonoBehaviour
 
     private void MoveObject()
     {
-        if (endPoint != null) // endPoint null deðilse hareketi baþlat
+        if (startPoint != null && endPoint != null) // endPoint null deðilse hareketi baþlat
         {
+            transform.position = startPoint.position; // Baþlangýç noktasýna objeyi yerleþtir
+
             transform.DOMove(endPoint.position, duration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         }
         else

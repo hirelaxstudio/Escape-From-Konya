@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb; // Oyuncunun Rigidbody bileþeni
+    public Rigidbody2D Rb { get { return rb; } } // Oyuncunun Rigidbody bileþenine eriþim
     private Animator anim; // Oyuncunun Animator bileþeni
     private SpriteRenderer sr; // Oyuncunun SpriteRenderer bileþeni
     private BoxCollider2D bc; // Oyuncunun BoxCollider2D bileþeni
@@ -18,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     private enum MovementState { idle, running, jumping, falling } // Oyuncunun hareket durumlarý
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody2D>(); // Rigidbody bileþenine eriþim
         anim = GetComponent<Animator>(); // Animator bileþenine eriþim

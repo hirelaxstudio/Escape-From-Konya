@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 public class TrampolineTrap : MonoBehaviour
@@ -8,21 +9,36 @@ public class TrampolineTrap : MonoBehaviour
     [SerializeField] private float jumpForce = 14f;
 
     private Animator anim;
-    private GameObject player;
+    private Rigidbody2D playerRB;
+    private bool isTrampolineActive = false;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        playerRB = GameObject.FindObjectOfType<PlayerMovement>().Rb;
 
         StartCoroutine(TriggerAnimationWithDelay());
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platforms") && collision.contacts[0].normal == Vector2.up)
+        /*
+        Trambolinin yanlarýna temas ederken de zýplatýyor. Bunu istemiyorum.
+        "collision.contacts[0].normal == Vector2.up" kodu PlatformCollisionHandler'da çalýþtý
+        ama burada çalýþmadý. Çözüm olarak raycast kullanmayý düþündüm ama PlayerMovement'da
+        da raycast kullandýðým için 2 raycast performans sorunu yaþarý diye düþünüyorum. Bu yüzden
+        raycast'i ayrý bir script olarak yazýp hem hitLeft.collider != null && hitLeft.collider.CompareTag("Trampolines")
+        þeklinde Tag'larý kontrol edebilecek hem hitLeft.collider != null && hitLeft.collider.gameObject.layer == groundLayer
+        þeklinde layer'larý kontrol edebilecek þekilde yazmayý düþünüyorum ama nasýl yazarým bilmiyorum.
+        */
+        string result1 = (collision.gameObject.CompareTag("Player")) ? "Player, " : "not player, ";
+        string result2 = (isTrampolineActive) ? "active, " : "not active, ";
+        string result3 = (collision.contacts[0].normal == Vector2.down) ? "down" : "not down";
+        Debug.Log("Trambolin: " + result1 + " " + result2 + " " + result3);
+
+        if (collision.gameObject.CompareTag("Player") && isTrampolineActive && collision.contacts[0].normal == Vector2.down)
         {
-            player.transform.SetParent(collision.transform);
+            playerRB.velocity = new Vector2(playerRB.velocity.x, jumpForce);
         }
     }
 
@@ -32,14 +48,15 @@ public class TrampolineTrap : MonoBehaviour
 
         while (true)
         {
+            isTrampolineActive = true; // Trambolin aktif olsun
+
             anim.SetTrigger("idle"); // "idle" animasyonunu tetikle
 
-            yield return new WaitForSeconds(0.667f); // Animasyonun uzunluðu kadar bekle
+            yield return new WaitForSeconds(0.5f); // Animasyonun uzunluðu kadar bekle
+
+            isTrampolineActive = false; // Trambolin aktif olmasýn
 
             yield return new WaitForSeconds(repeatDelay); // repeatDelay kadar bekle
         }
     }
 }
-/*
-PlatformCollisionHandler scripti Platform objesine component eklendiði için unity "collision" bunun Platform objesi olduðunu bilmiyormu zaten? Neden "collision.gameObject.CompareTag("Platforms")" þeklinde kontrol etme ihtiyacý duyuyor? Galiba ben OnCollisionEnter2D anlamadýðým için bu soruyu sordum. Unity Game Developer gibi davran. Unity'e yeni baþlayan birisinin anlayabileceði bir þekilde anlat.
-*/
