@@ -12,12 +12,14 @@ public class PlayerMovement : MonoBehaviour
     private float dirx; // Yatay giriþ deðeri
     private float raycastExtentY; // Yatay raycast
     private float raycastExtentX; // Dikey raycast
+    private bool doubleJump; // Çift zýplama
+    public bool DoubleJump { get { return doubleJump; } set { doubleJump = value; } }
 
     [SerializeField] private float playerSpeed = 7f; // Oyuncunun hareket hýzý
     [SerializeField] private float playerJump = 14f; // Oyuncunun zýplama gücü
     [SerializeField] private LayerMask groundLayer; // Yerde olup olmadýðýný kontrol etmek için kullanýlan layer maskesi
 
-    private enum MovementState { idle, running, jumping, falling } // Oyuncunun hareket durumlarý
+    private enum MovementState { idle, running, jumping, falling, doubleJump } // Oyuncunun hareket durumlarý
 
     private void Awake()
     {
@@ -36,10 +38,22 @@ public class PlayerMovement : MonoBehaviour
     {
         bool isGrounded = IsGroundedCheck(); // Oyuncunun yerde olup olmadýðýný kontrol et
 
-        // Zýplama iþlemi
-        if (isGrounded && Input.GetKeyDown(KeyCode.W)) // Oyuncu yerde ve W tuþuna basýldýysa
+        dirx = Input.GetAxisRaw("Horizontal"); // Yatay giriþ deðerini al
+
+        if (Input.GetKeyDown(KeyCode.W))
         {
-            rb.velocity = new Vector2(rb.velocity.x, playerJump); // Zýpla
+            if (isGrounded)
+            {
+                Debug.Log("doubleJump: True");
+                rb.velocity = new Vector2(rb.velocity.x, playerJump);
+                doubleJump = true;
+            }
+            else if (doubleJump)
+            {
+                Debug.Log("doubleJump: False");
+                rb.velocity = new Vector2(rb.velocity.x, playerJump * 0.75f);
+                doubleJump = false;
+            }
         }
 
         UpdateAnimationState(); // Animasyon durumunu güncelle
@@ -47,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        dirx = Input.GetAxisRaw("Horizontal"); // Yatay giriþ deðerini al
         rb.velocity = new Vector2(dirx * playerSpeed, rb.velocity.y); // Hareket etmek için hýzý güncelle
     }
 
@@ -55,9 +68,16 @@ public class PlayerMovement : MonoBehaviour
     {
         MovementState state = MovementState.idle; // Hareket durumunu varsayýlan olarak idle olarak ayarla
 
-        if (rb.velocity.y > .1f) // Yükselme hýzý pozitif ise (zýplama animasyonu)
+        
+        if (rb.velocity.y > .1f && doubleJump) // Yükselme hýzý pozitif ise (zýplama animasyonu)
         {
+            Debug.Log("Jump Anim");
             state = MovementState.jumping;
+        }
+        else if (rb.velocity.y > .1f && !doubleJump)
+        {
+            Debug.Log("Double Jump Anim");
+            state = MovementState.doubleJump;
         }
         else if (rb.velocity.y < -.1f) // Yükselme hýzý negatif ise (düþme animasyonu)
         {

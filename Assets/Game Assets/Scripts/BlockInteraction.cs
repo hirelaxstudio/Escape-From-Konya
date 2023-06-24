@@ -18,11 +18,6 @@ public class BlockInteraction : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        string result1 = (collision.gameObject.CompareTag("Player")) ? "Player, " : "not player, ";
-        string result2 = (isTriggered) ? "triggered, " : "not triggered, ";
-        string result3 = (collision.contacts[0].normal == Vector2.down) ? "down" : "not down";
-        Debug.Log("Block: " + result1 + " " + result2 + " " + result3);
-
         if (collision.gameObject.CompareTag("Player") && !isTriggered && collision.contacts[0].normal == Vector2.down)
         {
             StartCoroutine(TriggerObject());
