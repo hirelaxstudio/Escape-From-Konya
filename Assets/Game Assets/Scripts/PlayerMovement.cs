@@ -86,8 +86,6 @@ public class PlayerMovement : MonoBehaviour
         }
         
     }
-
-    // Oyuncu doublejump yaptýktan sonra duvarda kayarsa jumping animasyonuna geçiþ olmuyor.
     private void UpdateAnimationState()
     {
         MovementState state = MovementState.idle; // Hareket durumunu varsayýlan olarak idle olarak ayarla
@@ -98,11 +96,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 sr.flipX = false;
                 state = MovementState.wallSlide;
+                doubleJump = true;
             }
             else if (isWall == -1)
             {
                 sr.flipX = true;
                 state = MovementState.wallSlide;
+                doubleJump = true;
             }
         }
         else if (rb.velocity.y > .1f && doubleJump) // Yükselme hýzý pozitif ise (zýplama animasyonu)
