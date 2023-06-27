@@ -9,6 +9,7 @@ TagManager:
   - Platforms
   - Trampolines
   - doubleJumpSkill
+  - Checkpoints
   layers:
   - Default
   - TransparentFX

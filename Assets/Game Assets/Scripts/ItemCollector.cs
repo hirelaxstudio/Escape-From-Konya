@@ -9,10 +9,8 @@ public class ItemCollector : MonoBehaviour
     {
         if (collision.CompareTag("Collectable items"))
         {
-            // Cherry_disappear animasyonunu baþlat
             collision.gameObject.GetComponent<Animator>().Play("Cherry_disappear");
 
-            // Objeyi 0.3 saniye sonra yok et
             Destroy(collision.gameObject, 0.3f);
 
             Score.score++;

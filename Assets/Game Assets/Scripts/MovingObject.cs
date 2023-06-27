@@ -14,9 +14,9 @@ public class MovingObject : MonoBehaviour
 
     private void MoveObject()
     {
-        if (startPoint != null && endPoint != null) // endPoint null deðilse hareketi baþlat
+        if (startPoint != null && endPoint != null)
         {
-            transform.position = startPoint.position; // Baþlangýç noktasýna objeyi yerleþtir
+            transform.position = startPoint.position;
 
             transform.DOMove(endPoint.position, duration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.Linear);
         }
@@ -28,6 +28,6 @@ public class MovingObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        transform.DOKill(); // Hareketi sonlandýr
+        transform.DOKill();
     }
 }

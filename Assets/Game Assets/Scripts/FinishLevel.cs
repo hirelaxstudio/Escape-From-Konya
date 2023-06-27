@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class FinishLevel : MonoBehaviour
+public class FinishLevelAnim : MonoBehaviour
 {
     private Animator anim;
 
@@ -18,12 +17,6 @@ public class FinishLevel : MonoBehaviour
         {
             anim.Play("End_trigger");
             isLevelComplate = true;
-            Invoke("ComplateLevel", 1f);
         }
-    }
-
-    private void ComplateLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

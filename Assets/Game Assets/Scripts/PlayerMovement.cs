@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb; // Oyuncunun Rigidbody bileþeni
+    private Rigidbody2D rb;
     public Rigidbody2D Rb { get { return rb; } } // Oyuncunun Rigidbody bileþenine eriþim
-    private Animator anim; // Oyuncunun Animator bileþeni
-    private SpriteRenderer sr; // Oyuncunun SpriteRenderer bileþeni
-    private BoxCollider2D bc; // Oyuncunun BoxCollider2D bileþeni
+    private Animator anim;
+    private SpriteRenderer sr;
+    private BoxCollider2D bc;
 
-    private float dirx; // Yatay giriþ deðeri
+    private float dirX; // Yatay giriþ deðeri
     private float raycastExtentY; // Yatay raycast
     private float raycastExtentX; // Dikey raycast
     [SerializeField] private float playerSpeed = 7f; // Oyuncunun hareket hýzý
@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallSliding; // Duvara kayýp kaymadýðýný kontrol etmek için kullanýlan bool
     private bool doubleJump; // Çift zýplama
     private bool iswallJump; // Duvara zýplama
-    private bool ICActived;
 
     public bool DoubleJump { get { return doubleJump; } set { doubleJump = value; } } // doubleJump deðiþkenine eriþim ve deðiþtirme
 
@@ -37,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>(); // Animator bileþenine eriþim
         sr = GetComponent<SpriteRenderer>(); // SpriteRenderer bileþenine eriþim
         bc = GetComponent<BoxCollider2D>(); // BoxCollider2D bileþenine eriþim
-        ICActived = GameObject.FindObjectOfType<CheckpointActived>().IsCheckpointActived;
 
         raycastExtentY = bc.bounds.extents.y; // Oyuncunun Y-eksenindeki boyutunun yarýsý
         raycastExtentX = bc.bounds.extents.x; // Oyuncunun X-eksenindeki boyutunun yarýsý 
@@ -50,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         isGround = IsGroundedCheck(); // Oyuncunun yerde olup olmadýðýný kontrol et
         isWall = IsWallCheck(); // Oyuncunun duvara çarpýp çarpmadýðýný kontrol et
 
-        dirx = Input.GetAxisRaw("Horizontal"); // Yatay giriþ deðerini al
+        dirX = Input.GetAxisRaw("Horizontal"); // Yatay giriþ deðerini al
 
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -81,9 +79,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGround || dirx != 0)
+        if (isGround || dirX != 0)
         {
-            rb.velocity = new Vector2(dirx * playerSpeed, rb.velocity.y); // Hareket etmek için hýzý güncelle
+            rb.velocity = new Vector2(dirX * playerSpeed, rb.velocity.y); // Hareket etmek için hýzý güncelle
         }
         
     }
@@ -118,16 +116,16 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.falling;
         }
-        else if (Mathf.Abs(dirx) > 0f) // Yatay giriþ deðeri 0'dan büyük ise (koþma animasyonu ve yüzünü çevirme)
+        else if (Mathf.Abs(dirX) > 0f) // Yatay giriþ deðeri 0'dan büyük ise (koþma animasyonu ve yüzünü çevirme)
         {
             state = MovementState.running;
-            sr.flipX = (dirx < 0f); // Yatay giriþ deðerine göre yüzünü çevirme
+            sr.flipX = (dirX < 0f); // Yatay giriþ deðerine göre yüzünü çevirme
         }
 
         // Karakter havadaysa ve yatay giriþ deðeri 0'dan büyük ise yüzünü çevirme
-        if (Mathf.Abs(rb.velocity.y) > .1f && Mathf.Abs(dirx) > 0f)
+        if (Mathf.Abs(rb.velocity.y) > .1f && Mathf.Abs(dirX) > 0f)
         {
-            sr.flipX = (dirx < 0f); // Yatay giriþ deðerine göre yüzünü çevirme
+            sr.flipX = (dirX < 0f); // Yatay giriþ deðerine göre yüzünü çevirme
         }
 
         anim.SetInteger("state", (int)state); // Animator'a hareket durumunu ileti
@@ -197,7 +195,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator LevelStart()
     {
-        ICActived = false;
         rb.bodyType = RigidbodyType2D.Static; // Rigidbody'nin body type'ýný Static olarak ayarla
         anim.Play("Player_start"); // Baþlangýç animasyonunu oynat
 

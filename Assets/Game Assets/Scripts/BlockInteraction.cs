@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BlockInteraction : MonoBehaviour
 {
-    private Animator anim;
+    private Animator anim; 
     private BoxCollider2D bc;
 
     [SerializeField] float brokenTime = 2f;
@@ -28,35 +28,22 @@ public class BlockInteraction : MonoBehaviour
     {
         isTriggered = true;
 
-        anim.SetTrigger("swinging"); // Block_swinging animasyonunu oynat
+        anim.SetTrigger("swinging");
 
         yield return new WaitForSeconds(2.333f);
 
-        bc.enabled = false; // BoxCollider2D'yi kapat
+        bc.enabled = false;
 
-        anim.SetTrigger("breaking"); // Block_breaking animasyonunu oynat
+        anim.SetTrigger("breaking");
 
-        yield return new WaitForSeconds(0.917f + brokenTime); // Block_breaking + brokenTime kadar bekle
+        yield return new WaitForSeconds(0.917f + brokenTime);
 
-        anim.SetTrigger("repairing"); // Block_repaired animasyonunu oynat
+        anim.SetTrigger("repairing");
 
-        yield return new WaitForSeconds(1f); // Block_repaired kadar bekle
+        yield return new WaitForSeconds(1f);
 
-        bc.enabled = true; // BoxCollider2D'yi aç
+        bc.enabled = true;
 
         isTriggered = false;
     }
 }
-
-/*
-Player üzerine bastýktan belli bir süre sonra kýrýlan bir "Block" objesi istiyorum. Bunun için aþaðýdaki gibi çalýþan bir koda ihtiyacým var:
-```
-Eðer Player objesi Block objesinin üst kýsmýna temas ederse:
-1: Block_swinging animasyonunu oynat (Bu animasyon block'un sallanmasýný içerir)
-2: BoxCollider2D'yi kapat
-3: Block_swinging animasyonunu oynat (Bu animasyon block'un kýrýlýp küçük bir topa dönüþmesini içerir)
-4: brokenTime kadar bekle (Bu deðer Block_repaired animasyonu oynatýlmadan önce ne kadar süre geçmesi gerektiðini belirten bir sayýdýr)
-5: Block_repaired animasyonunu oynat (Bu animasyon topa dönüþmüþ block'un tekrar block'a dönüþmesini içerir)
-6: BoxCollide2d'yi aç
-```
-*/

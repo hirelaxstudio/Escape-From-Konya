@@ -19,19 +19,19 @@ public class FireTrap : MonoBehaviour
 
     private IEnumerator TriggerAnimationWithDelay()
     {
-        yield return new WaitForSeconds(startDelay); // startDelay kadar bekle
+        yield return new WaitForSeconds(startDelay);
 
         while (true)
         {
-            anim.SetTrigger("idle"); // "idle" animasyonunu tetikle
+            anim.SetTrigger("idle");
 
-            bc.enabled = true; // BoxCollider'ý aktif et
+            bc.enabled = true;
 
-            yield return new WaitForSeconds(0.667f); // Animasyonun uzunluðu kadar bekle
+            yield return new WaitForSeconds(0.667f);
 
-            bc.enabled = false; // BoxCollider'ý pasif et
+            bc.enabled = false;
 
-            yield return new WaitForSeconds(repeatDelay); // repeatDelay kadar bekle
+            yield return new WaitForSeconds(repeatDelay);
         }
     }
 }

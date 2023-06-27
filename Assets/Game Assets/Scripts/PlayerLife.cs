@@ -5,20 +5,24 @@ public class PlayerLife : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
-    private Vector2 CPPosition;
-    private bool ICActived;
+    private static Vector2 checkpointPosition;
+    private static bool isCheckpointActived;
+    private bool isFinishLevel;
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        isFinishLevel = false;
+        if (isCheckpointActived)
+        {
+            gameObject.transform.position = checkpointPosition;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Traps"))
         {
-            Debug.Log("OnCollisionEnter2D isCheckpointActived: " + ICActived);
-            Debug.Log("Checkpoint Position: " + CPPosition);
             Die();
         }
     }
@@ -27,9 +31,20 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Traps"))
         {
-            Debug.Log("OnTriggerEnter2D isCheckpointActived: " + ICActived);
-            Debug.Log("Checkpoint Position: " + CPPosition);
             Die();
+        }
+        else if (collision.gameObject.CompareTag("Checkpoints"))
+        {
+            checkpointPosition = collision.gameObject.transform.position;
+            isCheckpointActived = true;
+            Debug.Log("Checkpoint Position: " + checkpointPosition);
+            Debug.Log("isCheckpointActived: " + isCheckpointActived);
+        }
+        else if (collision.gameObject.CompareTag("Finish"))
+        {
+            isFinishLevel = true;
+            isCheckpointActived = false;
+            Invoke("LevelController", 1f);
         }
     }
 
@@ -37,21 +52,22 @@ public class PlayerLife : MonoBehaviour
     {
         rb.bodyType = RigidbodyType2D.Static;
         anim.SetTrigger("death");
-        Invoke("RestartLevel", 0.5f);
+        Invoke("LevelController", 0.5f);
     }
 
-    // ICActived ve CPPosition deðerleri dinamik olarak deðiþmediði için Chechpoint sistemi çalýþmýyor.
-    private void RestartLevel()
+    private void LevelController()
     {
-        if (ICActived)
+        if (isCheckpointActived)
         {
             Debug.Log("RestartLevel CP");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            gameObject.transform.position = CPPosition;
         }
+        else if (isFinishLevel)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        } 
         else
         {
-            ICActived = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
