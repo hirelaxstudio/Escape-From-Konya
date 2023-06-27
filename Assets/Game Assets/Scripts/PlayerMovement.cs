@@ -1,5 +1,4 @@
 using System.Collections;
-using System.IO;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -23,7 +22,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isGround; // Yerde olup olmadýðýný kontrol etmek için kullanýlan bool
     private bool isWallSliding; // Duvara kayýp kaymadýðýný kontrol etmek için kullanýlan bool
     private bool doubleJump; // Çift zýplama
-    private bool iswallJump;
+    private bool iswallJump; // Duvara zýplama
+    private bool ICActived;
 
     public bool DoubleJump { get { return doubleJump; } set { doubleJump = value; } } // doubleJump deðiþkenine eriþim ve deðiþtirme
 
@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>(); // Animator bileþenine eriþim
         sr = GetComponent<SpriteRenderer>(); // SpriteRenderer bileþenine eriþim
         bc = GetComponent<BoxCollider2D>(); // BoxCollider2D bileþenine eriþim
+        ICActived = GameObject.FindObjectOfType<CheckpointActived>().IsCheckpointActived;
 
         raycastExtentY = bc.bounds.extents.y; // Oyuncunun Y-eksenindeki boyutunun yarýsý
         raycastExtentX = bc.bounds.extents.x; // Oyuncunun X-eksenindeki boyutunun yarýsý 
@@ -182,24 +183,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (hitLeft.collider != null)
         {
-            Debug.Log("Hit Left");
             return -1;
         }
         else if (hitRight.collider != null)
         {
-            Debug.Log("Hit Right");
             return 1;
         }
         else
         {
-            Debug.Log("Hit None");
             return 0;
         }
     }
 
-
     private IEnumerator LevelStart()
     {
+        ICActived = false;
         rb.bodyType = RigidbodyType2D.Static; // Rigidbody'nin body type'ýný Static olarak ayarla
         anim.Play("Player_start"); // Baþlangýç animasyonunu oynat
 

@@ -5,6 +5,8 @@ public class PlayerLife : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
+    private Vector2 CPPosition;
+    private bool ICActived;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -15,6 +17,8 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Traps"))
         {
+            Debug.Log("OnCollisionEnter2D isCheckpointActived: " + ICActived);
+            Debug.Log("Checkpoint Position: " + CPPosition);
             Die();
         }
     }
@@ -23,25 +27,12 @@ public class PlayerLife : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Traps"))
         {
+            Debug.Log("OnTriggerEnter2D isCheckpointActived: " + ICActived);
+            Debug.Log("Checkpoint Position: " + CPPosition);
             Die();
         }
     }
 
-    // 2. Die() metodu
-    //private void Die()
-    //{
-    //    rb.bodyType = RigidbodyType2D.Static;
-    //    anim.SetTrigger("death");
-    //    StartCoroutine(RestartLevelCoroutine());
-    //}
-
-    //private IEnumerator RestartLevelCoroutine()
-    //{
-    //    yield return new WaitForSeconds(0.5f);
-    //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    //}
-
-    // 1. Die() metodu
     private void Die()
     {
         rb.bodyType = RigidbodyType2D.Static;
@@ -49,8 +40,19 @@ public class PlayerLife : MonoBehaviour
         Invoke("RestartLevel", 0.5f);
     }
 
+    // ICActived ve CPPosition deðerleri dinamik olarak deðiþmediði için Chechpoint sistemi çalýþmýyor.
     private void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (ICActived)
+        {
+            Debug.Log("RestartLevel CP");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            gameObject.transform.position = CPPosition;
+        }
+        else
+        {
+            ICActived = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
