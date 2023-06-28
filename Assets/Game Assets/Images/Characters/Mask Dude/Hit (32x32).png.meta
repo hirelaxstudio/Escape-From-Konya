@@ -303,6 +303,90 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Hit (32x32)_7
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b04b59b83c46554082fe836584d4d6c
+      internalID: 670232421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hit (32x32)_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 400ba9bb89aa69b418c29e5cc2eb82d2
+      internalID: -756445515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hit (32x32)_9
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 555ac6217ae60544c8f0da73ae25cece
+      internalID: 45000992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hit (32x32)_10
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0581ceb99ca5d6a44a1b4651f0705925
+      internalID: -1879402206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -316,11 +400,15 @@ TextureImporter:
     nameFileIdTable:
       Hit (32x32)_0: 6868122594974341346
       Hit (32x32)_1: 7167584040609486739
+      Hit (32x32)_10: -1879402206
       Hit (32x32)_2: -1675461080110260169
       Hit (32x32)_3: 8480664182131228983
       Hit (32x32)_4: -953560442851353963
       Hit (32x32)_5: -3450976776972242761
       Hit (32x32)_6: 7062579536633761780
+      Hit (32x32)_7: 670232421
+      Hit (32x32)_8: -756445515
+      Hit (32x32)_9: 45000992
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

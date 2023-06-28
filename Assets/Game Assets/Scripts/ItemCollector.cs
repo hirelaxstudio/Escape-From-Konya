@@ -9,7 +9,7 @@ public class ItemCollector : MonoBehaviour
     {
         if (collision.CompareTag("Collectable items"))
         {
-            collision.gameObject.GetComponent<Animator>().Play("Cherry_disappear");
+            collision.gameObject.GetComponent<Animator>().Play("Coin_disappear");
 
             Destroy(collision.gameObject, 0.3f);
 

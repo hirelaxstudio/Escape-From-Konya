@@ -32689,7 +32689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122280721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.26, y: 0.6, z: 0}
+  m_LocalPosition: {x: -11.48, y: 0.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33054,7 +33054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7578739385757590442, guid: 2d2a4e671c725de42ac2ca85cddd3fb7, type: 3}
       propertyPath: m_Name
-      value: Cherry
+      value: Coin
       objectReference: {fileID: 0}
     - target: {fileID: 9067608981982215012, guid: 2d2a4e671c725de42ac2ca85cddd3fb7, type: 3}
       propertyPath: m_RootOrder
