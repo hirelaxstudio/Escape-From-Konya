@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,10 +9,13 @@ public class PlayerLife : MonoBehaviour
     private static Vector2 checkpointPosition;
     private static bool isCheckpointActived;
     private bool isFinishLevel;
+    [SerializeField] private List<AudioClip> clipList;
+    private AudioSource auso;
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        auso = GetComponent<AudioSource>();
         isFinishLevel = false;
         if (isCheckpointActived)
         {
@@ -37,13 +41,13 @@ public class PlayerLife : MonoBehaviour
         {
             checkpointPosition = collision.gameObject.transform.position;
             isCheckpointActived = true;
-            Debug.Log("Checkpoint Position: " + checkpointPosition);
-            Debug.Log("isCheckpointActived: " + isCheckpointActived);
+            collision.gameObject.GetComponent<AudioSource>().Play();
         }
         else if (collision.gameObject.CompareTag("Finish"))
         {
             isFinishLevel = true;
             isCheckpointActived = false;
+            collision.gameObject.GetComponent<AudioSource>().Play();
             Invoke("LevelController", 1f);
         }
     }
@@ -51,6 +55,7 @@ public class PlayerLife : MonoBehaviour
     private void Die()
     {
         rb.bodyType = RigidbodyType2D.Static;
+        auso.PlayOneShot(clipList[0]);
         anim.SetTrigger("death");
         Invoke("LevelController", 0.5f);
     }
@@ -59,7 +64,6 @@ public class PlayerLife : MonoBehaviour
     {
         if (isCheckpointActived)
         {
-            Debug.Log("RestartLevel CP");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else if (isFinishLevel)

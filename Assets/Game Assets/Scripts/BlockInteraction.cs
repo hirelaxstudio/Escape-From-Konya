@@ -5,6 +5,7 @@ public class BlockInteraction : MonoBehaviour
 {
     private Animator anim; 
     private BoxCollider2D bc;
+    private AudioSource auso;
 
     [SerializeField] float brokenTime = 2f;
 
@@ -14,6 +15,7 @@ public class BlockInteraction : MonoBehaviour
     {
         bc = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+        auso = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -34,6 +36,7 @@ public class BlockInteraction : MonoBehaviour
 
         bc.enabled = false;
 
+        auso.Play();
         anim.SetTrigger("breaking");
 
         yield return new WaitForSeconds(0.917f + brokenTime);

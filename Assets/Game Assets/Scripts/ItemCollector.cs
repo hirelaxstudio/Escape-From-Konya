@@ -9,6 +9,7 @@ public class ItemCollector : MonoBehaviour
     {
         if (collision.CompareTag("Collectable items"))
         {
+            collision.gameObject.GetComponent<AudioSource>().Play();
             collision.gameObject.GetComponent<Animator>().Play("Coin_disappear");
 
             Destroy(collision.gameObject, 0.3f);

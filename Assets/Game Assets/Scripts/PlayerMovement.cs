@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private SpriteRenderer sr;
     private BoxCollider2D bc;
+    private AudioSource auso;
 
     private float dirX; // Yatay giriþ deðeri
     private float raycastExtentY; // Yatay raycast
@@ -29,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer; // Yerde olup olmadýðýný kontrol etmek için kullanýlan layer maskesi
 
     private enum MovementState { idle, running, jumping, falling, doubleJump, wallSlide } // Oyuncunun hareket durumlarý
+    
+    [SerializeField] private List <AudioClip> clipList;
 
     private void Awake()
     {
@@ -36,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>(); // Animator bileþenine eriþim
         sr = GetComponent<SpriteRenderer>(); // SpriteRenderer bileþenine eriþim
         bc = GetComponent<BoxCollider2D>(); // BoxCollider2D bileþenine eriþim
+        auso = GetComponent<AudioSource>(); // AudioSource bileþenine eriþim
 
         raycastExtentY = bc.bounds.extents.y; // Oyuncunun Y-eksenindeki boyutunun yarýsý
         raycastExtentX = bc.bounds.extents.x; // Oyuncunun X-eksenindeki boyutunun yarýsý 
@@ -55,18 +60,21 @@ public class PlayerMovement : MonoBehaviour
             // Burada kaldýn. walljump yaparken doublejump yapmamasýný saðlaman lazým.
             if (isWallSliding)
             {
+                auso.PlayOneShot(clipList[2]);
                 iswallJump = true;
                 rb.velocity = new Vector2(rb.velocity.x, playerJump);
                 rb.AddForce(new Vector2(-isWall * wallJumpForce, 0), ForceMode2D.Impulse);
             }
             else if (isGround)
             {
+                auso.PlayOneShot(clipList[2]);
                 iswallJump = false;
                 rb.velocity = new Vector2(rb.velocity.x, playerJump);
                 doubleJump = true;
             }
             else if (doubleJump && !iswallJump)
             {
+                auso.PlayOneShot(clipList[2]);
                 rb.velocity = new Vector2(rb.velocity.x, playerJump * 0.75f);
                 doubleJump = false;
             }
@@ -81,7 +89,19 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGround || dirX != 0)
         {
+            //auso.PlayOneShot(clipList[1]);
             rb.velocity = new Vector2(dirX * playerSpeed, rb.velocity.y); // Hareket etmek için hýzý güncelle
+            if (rb.velocity.x != 0)
+            {
+                if (!auso.isPlaying && isGround)
+                {
+                    auso.PlayOneShot(clipList[1]);
+                }
+            }
+            else
+            {
+                auso.Stop();
+            }
         }
         
     }
@@ -160,9 +180,9 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hitLeft = Physics2D.Raycast(raycastOriginLeft, Vector2.down, raycastExtentY + 0.1f, groundLayer); // Sol raycast'i at ve yerde bir þey var mý kontrol et
         RaycastHit2D hitRight = Physics2D.Raycast(raycastOriginRight, Vector2.down, raycastExtentY + 0.1f, groundLayer); // Sað raycast'i at ve yerde bir þey var mý kontrol et
 
-        // Debug çizgilerini çiz
-        Debug.DrawRay(raycastOriginLeft, Vector2.down * (raycastExtentY + 0.1f), hitLeft.collider != null ? Color.green : Color.red);
-        Debug.DrawRay(raycastOriginRight, Vector2.down * (raycastExtentY + 0.1f), hitRight.collider != null ? Color.green : Color.red);
+        //// Debug çizgilerini çiz
+        //Debug.DrawRay(raycastOriginLeft, Vector2.down * (raycastExtentY + 0.1f), hitLeft.collider != null ? Color.green : Color.red);
+        //Debug.DrawRay(raycastOriginRight, Vector2.down * (raycastExtentY + 0.1f), hitRight.collider != null ? Color.green : Color.red);
 
         return hitLeft.collider != null || hitRight.collider != null; // Sol veya sað raycast'ten herhangi biri yerde bir þey algýladýysa true dön, aksi halde false dön
     }
@@ -175,9 +195,9 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D hitLeft = Physics2D.Raycast(raycastOrigin, Vector2.left, raycastExtentX + 0.1f, groundLayer);
         RaycastHit2D hitRight = Physics2D.Raycast(raycastOrigin, Vector2.right, raycastExtentX + 0.1f, groundLayer);
 
-        // Debug çizgilerini çiz
-        Debug.DrawRay(raycastOrigin, Vector2.left * (raycastExtentX + 0.1f), hitLeft.collider != null ? Color.green : Color.red);
-        Debug.DrawRay(raycastOrigin, Vector2.right * (raycastExtentX + 0.1f), hitRight.collider != null ? Color.green : Color.red);
+        //// Debug çizgilerini çiz
+        //Debug.DrawRay(raycastOrigin, Vector2.left * (raycastExtentX + 0.1f), hitLeft.collider != null ? Color.green : Color.red);
+        //Debug.DrawRay(raycastOrigin, Vector2.right * (raycastExtentX + 0.1f), hitRight.collider != null ? Color.green : Color.red);
 
         if (hitLeft.collider != null)
         {
@@ -196,6 +216,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator LevelStart()
     {
         rb.bodyType = RigidbodyType2D.Static; // Rigidbody'nin body type'ýný Static olarak ayarla
+        auso.PlayOneShot(clipList[0]);
         anim.Play("Player_start"); // Baþlangýç animasyonunu oynat
 
         yield return new WaitForSeconds(0.5f); // 0.5 saniye bekle

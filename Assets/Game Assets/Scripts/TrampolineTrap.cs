@@ -9,11 +9,13 @@ public class TrampolineTrap : MonoBehaviour
 
     private Animator anim;
     private PlayerMovement playerMovement;
+    private AudioSource auso;
     private bool isTrampolineActive = false;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
+        auso = GetComponent<AudioSource>();
         playerMovement = GameObject.FindObjectOfType<PlayerMovement>();
 
         StartCoroutine(TriggerAnimationWithDelay());
@@ -36,6 +38,7 @@ public class TrampolineTrap : MonoBehaviour
         {
             isTrampolineActive = true; // Trambolin aktif olsun
 
+            auso.Play();
             anim.SetTrigger("idle"); // "idle" animasyonunu tetikle
 
             yield return new WaitForSeconds(0.5f); // Animasyonun uzunluðu kadar bekle
