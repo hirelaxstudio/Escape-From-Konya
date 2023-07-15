@@ -32662,8 +32662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bd7723967d53d4e88774fe2514926c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clipList:
-  - {fileID: 8300000, guid: dc6614beca09347ec9b258f12d154bdd, type: 3}
+  playerDeathAudio: {fileID: 8300000, guid: b9eff218e132a4e76be78840eca96fb2, type: 3}
 --- !u!114 &2122280730
 MonoBehaviour:
   m_ObjectHideFlags: 0

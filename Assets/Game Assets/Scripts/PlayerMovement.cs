@@ -25,14 +25,15 @@ public class PlayerMovement : MonoBehaviour
     private bool isWallSliding; // Duvara kayýp kaymadýðýný kontrol etmek için kullanýlan bool
     private bool doubleJump; // Çift zýplama
     private bool iswallJump; // Duvara zýplama
+    private bool isLevelStart = true; // Level baþlangýcý
+    private PlayerLife pl;
 
     public bool DoubleJump { get { return doubleJump; } set { doubleJump = value; } } // doubleJump deðiþkenine eriþim ve deðiþtirme
 
     [SerializeField] private LayerMask groundLayer; // Yerde olup olmadýðýný kontrol etmek için kullanýlan layer maskesi
+    [SerializeField] private List<AudioClip> clipList;
 
     private enum MovementState { idle, running, jumping, falling, doubleJump, wallSlide } // Oyuncunun hareket durumlarý
-    
-    [SerializeField] private List <AudioClip> clipList;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         sr = GetComponent<SpriteRenderer>(); // SpriteRenderer bileþenine eriþim
         bc = GetComponent<BoxCollider2D>(); // BoxCollider2D bileþenine eriþim
         auso = GetComponent<AudioSource>(); // AudioSource bileþenine eriþim
+        pl = GameObject.FindObjectOfType<PlayerLife>();
 
         raycastExtentY = bc.bounds.extents.y; // Oyuncunun Y-eksenindeki boyutunun yarýsý
         raycastExtentX = bc.bounds.extents.x; // Oyuncunun X-eksenindeki boyutunun yarýsý 
@@ -55,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
         dirX = Input.GetAxisRaw("Horizontal"); // Yatay giriþ deðerini al
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && !pl.IsDead && !isLevelStart)
         {
             // Burada kaldýn. walljump yaparken doublejump yapmamasýný saðlaman lazým.
             if (isWallSliding)
@@ -87,9 +89,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isGround || dirX != 0)
+        if ((isGround || dirX != 0) && !pl.IsDead && !isLevelStart)
         {
-            //auso.PlayOneShot(clipList[1]);
             rb.velocity = new Vector2(dirX * playerSpeed, rb.velocity.y); // Hareket etmek için hýzý güncelle
             if (rb.velocity.x != 0)
             {
@@ -221,6 +222,8 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f); // 0.5 saniye bekle
 
+        isLevelStart = false; // Level baþladý
         rb.bodyType = RigidbodyType2D.Dynamic; // Rigidbody'nin body type'ýný Dynamic olarak ayarla
+
     }
 }
